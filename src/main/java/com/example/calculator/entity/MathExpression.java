@@ -16,7 +16,7 @@ public class MathExpression {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(name = "expression", nullable = false, unique = true)
+    @Column(name = "expression", nullable = false)
     @MathematicalExpression
     private String expression;
 
