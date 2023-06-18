@@ -2,7 +2,11 @@ package com.example.calculator.entity;
 
 import com.example.calculator.validation.MathematicalExpression;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "expressions")
@@ -17,9 +21,14 @@ public class MathExpression {
     private Long id;
 
     @Column(name = "expression", nullable = false)
+    @NotEmpty
     @MathematicalExpression
     private String expression;
 
     @Column(name = "user_ip")
     private String userIp;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

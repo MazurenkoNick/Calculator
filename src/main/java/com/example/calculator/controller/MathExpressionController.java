@@ -22,7 +22,7 @@ public class MathExpressionController {
     @PostMapping
     public ResponseEntity<MathExpression> saveMathExpression(@Valid @RequestBody MathExpression expression,
                                                              HttpServletRequest request) {
-        MathExpression result = expressionService.save(expression, request.getRemoteAddr());
+        MathExpression result = expressionService.save(expression, request);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
