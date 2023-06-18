@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 public class MathExpressionService {
 
     private final MathExpressionRepository expressionRepository;
+    private final HttpServletRequest request;
 
-    public MathExpression save(MathExpression expression, HttpServletRequest request) {
+    public MathExpression save(MathExpression expression) {
         expression.setUserIp(retrieveClientIp(request));
         return expressionRepository.save(expression);
     }

@@ -2,7 +2,6 @@ package com.example.calculator.controller;
 
 import com.example.calculator.entity.MathExpression;
 import com.example.calculator.service.MathExpressionService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +19,8 @@ public class MathExpressionController {
     private final MathExpressionService expressionService;
 
     @PostMapping
-    public ResponseEntity<MathExpression> saveMathExpression(@Valid @RequestBody MathExpression expression,
-                                                             HttpServletRequest request) {
-        MathExpression result = expressionService.save(expression, request);
+    public ResponseEntity<MathExpression> saveMathExpression(@Valid @RequestBody MathExpression expression) {
+        MathExpression result = expressionService.save(expression);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }

@@ -31,4 +31,28 @@ public class MathExpression {
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    /**
+     * Method returns correctly formatted mathematical expression without
+     * unnecessary spaces. Method replaces all commas with dots as well
+     */
+    public String getFormattedExpression() {
+        StringBuilder sb = new StringBuilder(expression);
+        int length = sb.length();
+
+        for (int i = 0; i < length; i++) {
+            char c = sb.charAt(i);
+
+            if (Character.isWhitespace(c)) {
+                sb.deleteCharAt(i);
+                length--;
+                i--;
+            }
+            else if (c == ',') {
+                sb.setCharAt(i, '.');
+            }
+        }
+
+        return sb.toString();
+    }
 }
