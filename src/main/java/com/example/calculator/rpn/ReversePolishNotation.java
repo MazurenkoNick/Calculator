@@ -24,7 +24,8 @@ public class ReversePolishNotation {
     }
 
     /**
-     *
+     * parameter {@link MathExpression} will be formatted to be parsed more easily to the RPN.
+     * The method will iterate over every character of the formatted expression and convert it to the RPN.
      * @param mathExpression is used during conversion to rpn
      * @return reverse polish notation from mathematical expression
      */
@@ -67,10 +68,23 @@ public class ReversePolishNotation {
         return getRpnExpression();
     }
 
+    /**
+     * Appends number to the RPN
+     * @param number
+     */
     private void appendNumber(String number) {
         rpnExpression.append(number).append(" ");
     }
 
+    /**
+     * If the operator from the argument is equal to closing parenthesis,
+     * it means that the method will retrieve everything between the opening and
+     * closing parentheses from the {@link ReversePolishNotation#stack} and append it to the RPN.
+     * Otherwise, the method will push the operator to the {@link ReversePolishNotation#stack}.
+     * Before that, the method will be popping the operators from the stack and adding them to the RPN
+     * unless it's an opening parenthesis or the precedence of this current operator is lower than the one from the argument.
+     * @param operator
+     */
     private void appendOperator(Operator operator) {
         if (operator.equals(Operator.CLOSING_PARENTHESIS)) {
             appendBetweenParenthesesToRpn();
@@ -85,6 +99,9 @@ public class ReversePolishNotation {
         }
     }
 
+    /**
+     * The method will add every operator to the RPN unless it hits an opening parenthesis
+     */
     private void appendBetweenParenthesesToRpn() {
         while (!Objects.equals(stack.peek(), Operator.OPENING_PARENTHESIS)) {
             popAndAppendToRpn();
