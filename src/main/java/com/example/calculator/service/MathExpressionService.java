@@ -19,7 +19,8 @@ public class MathExpressionService {
 
     /**
      * If formatted expression equals to the persisted expression in the database,
-     * it'll be retrieved and new expression will not be persisted again. Otherwise, it'll be saved.
+     * the persisted one will be retrieved and new expression will not be persisted again.
+     * Otherwise, it'll be saved.
      * @param expression default mathematical expression
      * @return {@link MathExpression}
      */
@@ -27,11 +28,13 @@ public class MathExpressionService {
         String formattedExpression = expression.getFormattedExpression();
         MathExpression samePersistedExpression = expressionRepository.findByExpression(formattedExpression);
 
+        System.out.println(formattedExpression);
         // if the same expression exists, return it
         if (samePersistedExpression != null) {
             return samePersistedExpression;
         }
 
+        // if expression is new, persist it and return persisted entity
         expression.setExpression(formattedExpression);
         return expressionRepository.save(expression);
     }
@@ -41,14 +44,15 @@ public class MathExpressionService {
         String formattedExpression = expression.getFormattedExpression();
         MathExpression samePersistedExpression = expressionRepository.findByExpression(formattedExpression);
 
-        // if the same expression exists, return it
-        if (samePersistedExpression != null) {
-            return samePersistedExpression;
-        }
-
         // if expression is new, calculate, persist it and return persisted entity
         BigDecimal answer = calculatorService.calculate(expression);
         double doubleAnswer = answer.doubleValue();
+
+        // if the same expression exists, add new answer and return it
+        if (samePersistedExpression != null) {
+            samePersistedExpression.getAnswers().add(doubleAnswer); // add new calculated value
+            return samePersistedExpression;
+        }
 
         expression.setExpression(formattedExpression);
         expression.getAnswers().add(doubleAnswer);

@@ -16,9 +16,10 @@ public class MathExpressionController {
     private final MathExpressionService expressionService;
 
     /**
-     * Method is used to retrieve
+     * Method is used to save the mathematical expression without calculating it.
+     * It retrieves {@link MathExpression#getExpression()} and saves it by it.
      *
-     * @param expression defaul mathematical expression
+     * @param expression default mathematical expression
      * @return {@link ResponseEntity<MathExpression>} validated and persisted mathematical expression
      */
     @PostMapping
@@ -28,6 +29,13 @@ public class MathExpressionController {
         return new ResponseEntity<>(persistedExpression, HttpStatus.CREATED);
     }
 
+    /**
+     * Method is used to save the mathematical expression after calculating it.
+     * It retrieves {@link MathExpression#getExpression()} and saves it by it.
+     *
+     * @param expression default mathematical expression
+     * @return {@link ResponseEntity<MathExpression>} validated and persisted mathematical expression
+     */
     @PostMapping("/calculate")
     public ResponseEntity<MathExpression> calculateAndSave(@Valid @RequestBody MathExpression expression) {
         MathExpression persistedExpression = expressionService.calculateAndSave(expression);
@@ -35,6 +43,27 @@ public class MathExpressionController {
         return new ResponseEntity<>(persistedExpression, HttpStatus.CREATED);
     }
 
+    /**
+     * @param equation default mathematical equation with unknown value 'x'.
+     * It retrieves equation from {@link MathExpression#getExpression()} field and all x's from {@link MathExpression#getAnswers()}}.
+     * If we replace 'x' in equation with values retrieved from {@link MathExpression#getAnswers()}} and both sides are equal,
+     * the equation will be saved to the database.
+     *
+     * @return {@link ResponseEntity<MathExpression>} calculated and persisted mathematical equation
+     */
+    @PostMapping("/equalise")
+    public ResponseEntity<MathExpression> equaliseAndSave(@Valid @RequestBody MathExpression equation) {
+        // todo: finish logic
+        return new ResponseEntity<>(equation, HttpStatus.CREATED);
+    }
+
+    /**
+     * Searches for {@link MathExpression} from the database using expression, which is passed as an argument.
+     * If expression is not found, null will be returned.
+     *
+     * @param expression default mathematical expression
+     * @return {@link ResponseEntity<MathExpression>}
+     */
     @GetMapping
     public ResponseEntity<MathExpression> getMathExpression(@RequestBody String expression) {
         MathExpression persistedExpression = expressionService.findByExpression(expression);

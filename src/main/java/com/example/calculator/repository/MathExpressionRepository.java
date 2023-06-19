@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface MathExpressionRepository extends JpaRepository<MathExpression, Long> {
 
-    @Query("SELECT e FROM MathExpression e JOIN FETCH e.answers WHERE e.expression = :expression")
+    @Query("SELECT e FROM MathExpression e LEFT JOIN FETCH e.answers WHERE e.expression = :expression")
     MathExpression findByExpression(@Param("expression") String expression);
 }
