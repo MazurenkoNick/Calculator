@@ -20,8 +20,15 @@ public class MathExpressionController {
 
     @PostMapping
     public ResponseEntity<MathExpression> saveMathExpression(@Valid @RequestBody MathExpression expression) {
-        MathExpression result = expressionService.save(expression);
+        MathExpression persistedExpression = expressionService.save(expression);
 
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(persistedExpression, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/calculate")
+    public ResponseEntity<MathExpression> calculateAndSave(@Valid @RequestBody MathExpression expression) {
+        MathExpression persistedExpression = expressionService.calculateAndSave(expression);
+
+        return new ResponseEntity<>(persistedExpression, HttpStatus.CREATED);
     }
 }

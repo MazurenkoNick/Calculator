@@ -55,7 +55,8 @@ class MathExpressionValidatorTest {
         String validExpression3 = "1/-5";
         String validExpression4 = "1-5";
         String validExpression5 = "1+5";
-        String validExpression6 = "((31+2*(1+5*(6+2))))";
+        String validExpression6 = "((31+2*(1+5/(6+2))))";
+        String validExpression7 = "1--5";
         String invalidExpression1 = "1-+5";
         String invalidExpression2 = "1++5";
         String invalidExpression3 = "1/+5";
@@ -71,6 +72,7 @@ class MathExpressionValidatorTest {
         assertTrue((Boolean) method.invoke(mathExpressionValidator, validExpression4));
         assertTrue((Boolean) method.invoke(mathExpressionValidator, validExpression5));
         assertTrue((Boolean) method.invoke(mathExpressionValidator, validExpression6));
+        assertTrue((Boolean) method.invoke(mathExpressionValidator, validExpression7));
         assertFalse((Boolean) method.invoke(mathExpressionValidator, invalidExpression1));
         assertFalse((Boolean) method.invoke(mathExpressionValidator, invalidExpression2));
         assertFalse((Boolean) method.invoke(mathExpressionValidator, invalidExpression3));

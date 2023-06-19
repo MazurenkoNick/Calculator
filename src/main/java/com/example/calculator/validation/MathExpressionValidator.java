@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class MathExpressionValidator implements ConstraintValidator<MathematicalExpression, String> {
 
-    private static final Pattern invalidOperandOrderPattern = Pattern.compile("\\d[+*/-][+*/]\\d");
+    private static final Pattern invalidOperatorOrderPattern = Pattern.compile("\\d[+*/-][+*/]\\d");
 
     @Override
     public boolean isValid(String expression, ConstraintValidatorContext context) {
@@ -36,6 +36,6 @@ public class MathExpressionValidator implements ConstraintValidator<Mathematical
     }
 
     private boolean validOperatorOrder(String expression) {
-        return !invalidOperandOrderPattern.matcher(expression).find();
+        return !invalidOperatorOrderPattern.matcher(expression).find();
     }
 }
