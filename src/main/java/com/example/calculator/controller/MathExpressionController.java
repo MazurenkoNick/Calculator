@@ -72,6 +72,12 @@ public class MathExpressionController {
         return ResponseEntity.ok(persistedExpression);
     }
 
+    /**
+     *
+     * @param answers are used to be searched upon during query
+     * @return {@link ResponseEntity<List<MathExpression>>} all expressions that have at least one of the answers which
+     * came from the argument of the method
+     */
     @GetMapping("/searchByAnswers")
     public ResponseEntity<List<MathExpression>> getMathExpressions(@RequestBody List<Double> answers) {
         List<MathExpression> expressions = expressionService.findByAnswers(answers);
