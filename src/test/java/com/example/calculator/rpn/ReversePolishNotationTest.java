@@ -18,8 +18,8 @@ class ReversePolishNotationTest {
     @Test
     void testConvertToRpn() {
         MathExpression expression1 = new MathExpression();
-        expression1.setExpression("-6.99 * -3.75 - ((-4.3 - -5.5)) + -2,2");
-        String actual1 = "-6.99 -3.75 * -4.3 -5.5 - - -2.2 +";
+        expression1.setExpression("(-6.999 * -3.75 - ((-4.3 - -5.5)) + -2,2 ) / -2");
+        String actual1 = "-6.999 -3.75 * -4.3 -5.5 - - -2.2 + -2 /";
 
         MathExpression expression2 = new MathExpression();
         expression2.setExpression("2+3*(40-23*(5+2))");

@@ -43,7 +43,7 @@ public class ReversePolishNotation {
                     && Operator.SUB.equals(Operator.getOperatorFromChar(character))) {
                 // -5.53 ; -2
                 if (negativeNumberMatcher.find()) {
-                    String number = negativeNumberMatcher.group(); // the number which was found by numberMatcher
+                    String number = negativeNumberMatcher.group(); // the number which was found by negativeNumberMatcher
                     i = negativeNumberMatcher.end() - 1; // the last index of number (+ 1 in the next iteration)
                     appendNumber(number);
                 }
@@ -89,7 +89,7 @@ public class ReversePolishNotation {
         while (!Objects.equals(stack.peek(), Operator.OPENING_PARENTHESIS)) {
             popAndAppendToRpn();
         }
-        stack.pop(); // pop opening parenthesis
+        stack.pop(); // pop opening parenthesis but not add it to rpn
     }
 
     private void appendStackToRpn() {
@@ -110,6 +110,8 @@ public class ReversePolishNotation {
         rpnExpression.deleteCharAt(lastIdx); // remove last " "
 
         String res = rpnExpression.toString();
+        // clean up
+        stack.clear();
         rpnExpression.setLength(0);
         return res.strip();
     }
