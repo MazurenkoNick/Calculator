@@ -16,27 +16,49 @@ public class ReversePolishNotation {
     private final StringBuilder rpnExpression;
     private final ArrayDeque<Operator> stack;
     private static final Pattern numberPattern = Pattern.compile("\\d+(\\.\\d+)?");
+    private static final Pattern negativeNumberPattern = Pattern.compile("-\\d+(\\.\\d+)?");
 
     public ReversePolishNotation() {
         this.rpnExpression = new StringBuilder();
         this.stack = new ArrayDeque<>();
     }
 
+    /**
+     *
+     * @param mathExpression is used during conversion to rpn
+     * @return reverse polish notation from mathematical expression
+     */
     public String convertToRpn(MathExpression mathExpression) {
         String formattedExpression = mathExpression.getFormattedExpression();
-        Matcher matcher = numberPattern.matcher(formattedExpression);
+        Matcher numberMatcher = numberPattern.matcher(formattedExpression);
+        Matcher negativeNumberMatcher = negativeNumberPattern.matcher(formattedExpression);
+        boolean isPrevCharOperator = false;
 
         // iterates over every character of the string, so converts it to the rpn
         for (int i = 0; i < formattedExpression.length(); i++) {
             char character = formattedExpression.charAt(i);
 
-            if (Operator.isOperator(character)) {
-                appendOperator(Operator.getOperatorFromChar(character));
-                // todo: check and resolve if there's another operator after the match (e.g. 4+-5)
+            // e.g. +- *- /- -- or string starts with - (e.g. "-6.99 + ...")
+            if ((i == 0 || isPrevCharOperator)
+                    && Operator.SUB.equals(Operator.getOperatorFromChar(character))) {
+                // -5.53 ; -2
+                if (negativeNumberMatcher.find()) {
+                    String number = negativeNumberMatcher.group(); // the number which was found by numberMatcher
+                    i = negativeNumberMatcher.end() - 1; // the last index of number (+ 1 in the next iteration)
+                    appendNumber(number);
+                }
+                isPrevCharOperator = false;
             }
-            else if (matcher.find(i)) { // find number
-                String number = matcher.group(); // the number which was found by matcher
-                i = matcher.end() - 1; // the last index of number (+ 1 in the next iteration)
+            // e.g. +-*/
+            else if (Operator.isOperator(character)) {
+                appendOperator(Operator.getOperatorFromChar(character));
+                isPrevCharOperator = true;
+            }
+            // e.g. 5.53 ; 2 ;
+            else if (numberMatcher.find(i)) { // find number
+                String number = numberMatcher.group(); // the number which was found by numberMatcher
+                i = numberMatcher.end() - 1; // the last index of number (+ 1 in the next iteration)
+                isPrevCharOperator = false;
                 appendNumber(number);
             }
         }

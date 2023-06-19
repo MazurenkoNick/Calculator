@@ -34,7 +34,9 @@ public class MathExpression {
 
     /**
      * Method returns correctly formatted mathematical expression without
-     * unnecessary spaces. Method replaces all commas with dots as well
+     * unnecessary spaces. Method replaces all commas with dots as well.
+     *
+     * @return new string is created after formation of the {@link MathExpression#expression}
      */
     public String getFormattedExpression() {
         StringBuilder sb = new StringBuilder(expression);
