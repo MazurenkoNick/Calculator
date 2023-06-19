@@ -70,6 +70,7 @@ public class MathExpression {
         return sb.toString();
     }
 
+    @JsonIgnore
     public boolean isEquation() {
         return expression.split("=").length == 2;
     }

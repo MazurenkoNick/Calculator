@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/expression")
 @AllArgsConstructor
@@ -64,9 +66,15 @@ public class MathExpressionController {
      * @param expression default mathematical expression
      * @return {@link ResponseEntity<MathExpression>}
      */
-    @GetMapping
+    @GetMapping("/searchByExpression")
     public ResponseEntity<MathExpression> getMathExpression(@RequestBody String expression) {
         MathExpression persistedExpression = expressionService.findByExpression(expression);
         return ResponseEntity.ok(persistedExpression);
+    }
+
+    @GetMapping("/searchByAnswers")
+    public ResponseEntity<List<MathExpression>> getMathExpressions(@RequestBody List<Double> answers) {
+        List<MathExpression> expressions = expressionService.findByAnswers(answers);
+        return ResponseEntity.ok(expressions);
     }
 }
