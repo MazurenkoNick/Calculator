@@ -51,10 +51,10 @@ public class MathExpressionController {
      *
      * @return {@link ResponseEntity<MathExpression>} calculated and persisted mathematical equation
      */
-    @PostMapping("/equalise")
-    public ResponseEntity<MathExpression> equaliseAndSave(@Valid @RequestBody MathExpression equation) {
-        // todo: finish logic
-        return new ResponseEntity<>(equation, HttpStatus.CREATED);
+    @PostMapping("/checkEquation")
+    public ResponseEntity<MathExpression> checkEquationAndSave(@Valid @RequestBody MathExpression equation) {
+        MathExpression persistedEquation = expressionService.resolveEquationAndSave(equation);
+        return new ResponseEntity<>(persistedEquation, HttpStatus.CREATED);
     }
 
     /**

@@ -25,6 +25,30 @@ public class CalculatorService {
     );
 
     /**
+     * @param root is used to be inserted in the equation
+     * @param equation
+     * @return true if the left and right side has maximum difference 10^-9, false otherwise.
+     */
+    public boolean checkRootOfEquation(Double root, MathExpression equation) {
+        String textEquation = equation.getFormattedExpression().replaceAll("x", root.toString());
+        String[] sidesOfEquation = textEquation.split("=");
+        MathExpression leftSide = new MathExpression();
+        MathExpression rightSide = new MathExpression();
+
+        if (sidesOfEquation.length < 2) {
+            throw new InvalidExpressionException("Equation does not have an equal sign");
+        }
+
+        leftSide.setExpression(sidesOfEquation[0]);
+        rightSide.setExpression(sidesOfEquation[1]);
+
+        BigDecimal leftSideResult = calculate(leftSide);
+        BigDecimal rightSideResult = calculate(rightSide);
+
+        return leftSideResult.subtract(rightSideResult).abs().doubleValue() <= 0.1E-9;
+    }
+
+    /**
      * Method will convert mathematical expression to the RPN.
      * It'll calculate the RPN using internal methods.
      *
@@ -86,5 +110,4 @@ public class CalculatorService {
     private BigDecimal operate(Operator operator, BigDecimal n1, BigDecimal n2) {
         return operations.get(operator).apply(n1, n2);
     }
-
 }

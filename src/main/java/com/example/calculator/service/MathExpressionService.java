@@ -24,11 +24,11 @@ public class MathExpressionService {
      * @param expression default mathematical expression
      * @return {@link MathExpression}
      */
+    @Transactional
     public MathExpression save(MathExpression expression) {
         String formattedExpression = expression.getFormattedExpression();
         MathExpression samePersistedExpression = expressionRepository.findByExpression(formattedExpression);
 
-        System.out.println(formattedExpression);
         // if the same expression exists, return it
         if (samePersistedExpression != null) {
             return samePersistedExpression;
@@ -59,7 +59,19 @@ public class MathExpressionService {
         return expressionRepository.save(expression);
     }
 
+    @Transactional
     public MathExpression findByExpression(String expression) {
         return expressionRepository.findByExpression(expression);
+    }
+
+    @Transactional
+    public MathExpression resolveEquationAndSave(MathExpression equation) {
+        for (Double root : equation.getAnswers()) {
+            boolean isRoot = calculatorService.checkRootOfEquation(root, equation);
+            if (!isRoot) {
+                throw new IllegalArgumentException("Root does not match the real answer");
+            }
+        }
+        return save(equation);
     }
 }
