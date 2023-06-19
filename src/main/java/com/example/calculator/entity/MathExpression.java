@@ -40,6 +40,9 @@ public class MathExpression {
     @Column(name = "value")
     private Set<Double> answers = new HashSet<>();
 
+    @Column(name = "IsEquation")
+    private boolean IsEquation; // false by default
+
     /**
      * Method returns correctly formatted mathematical expression without
      * unnecessary spaces. Method replaces all commas with dots as well.
@@ -65,5 +68,9 @@ public class MathExpression {
         }
 
         return sb.toString();
+    }
+
+    public boolean isEquation() {
+        return expression.split("=").length == 2;
     }
 }

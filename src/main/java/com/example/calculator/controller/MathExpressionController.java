@@ -53,7 +53,7 @@ public class MathExpressionController {
      */
     @PostMapping("/checkEquation")
     public ResponseEntity<MathExpression> checkEquationAndSave(@Valid @RequestBody MathExpression equation) {
-        MathExpression persistedEquation = expressionService.resolveEquationAndSave(equation);
+        MathExpression persistedEquation = expressionService.checkRootsOfEquationAndSave(equation);
         return new ResponseEntity<>(persistedEquation, HttpStatus.CREATED);
     }
 

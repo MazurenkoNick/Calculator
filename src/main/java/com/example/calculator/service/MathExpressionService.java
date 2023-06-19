@@ -2,7 +2,6 @@ package com.example.calculator.service;
 
 import com.example.calculator.entity.MathExpression;
 import com.example.calculator.repository.MathExpressionRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ public class MathExpressionService {
 
     private final CalculatorService calculatorService;
     private final MathExpressionRepository expressionRepository;
-    private final HttpServletRequest request;
 
     /**
      * If formatted expression equals to the persisted expression in the database,
@@ -36,7 +34,9 @@ public class MathExpressionService {
 
         // if expression is new, persist it and return persisted entity
         expression.setExpression(formattedExpression);
-        return expressionRepository.save(expression);
+
+
+        return persist(expression);
     }
 
     @Transactional
@@ -54,9 +54,10 @@ public class MathExpressionService {
             return samePersistedExpression;
         }
 
-        expression.setExpression(formattedExpression);
         expression.getAnswers().add(doubleAnswer);
-        return expressionRepository.save(expression);
+        expression.setExpression(formattedExpression);
+
+        return persist(expression);
     }
 
     @Transactional
@@ -65,13 +66,22 @@ public class MathExpressionService {
     }
 
     @Transactional
-    public MathExpression resolveEquationAndSave(MathExpression equation) {
+    public MathExpression checkRootsOfEquationAndSave(MathExpression equation) {
         for (Double root : equation.getAnswers()) {
             boolean isRoot = calculatorService.checkRootOfEquation(root, equation);
             if (!isRoot) {
                 throw new IllegalArgumentException("Root does not match the real answer");
             }
         }
-        return save(equation);
+
+        return persist(equation);
+    }
+
+    private MathExpression persist(MathExpression expression) {
+        if (expression.isEquation()) {
+            expression.setIsEquation(true);
+        }
+
+        return expressionRepository.save(expression);
     }
 }
